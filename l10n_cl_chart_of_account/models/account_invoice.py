@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import api, models, fields, _
 
-
+"""
 class AccountInvoiceTax(models.Model):
     _inherit = "account.invoice.tax"
 
@@ -31,12 +31,12 @@ class AccountInvoiceTax(models.Model):
                     base = currency.round(price_tax_included / ( 1 + tax.tax_id.amount / 100.0))
             neto += base
         return neto
-
-
+"""
+"""
 class AccountInvoiceLine(models.Model):
     _inherit = "account.invoice.line"
 
-    @api.one
+    #@api.one
     @api.depends('price_unit', 'discount', 'invoice_line_tax_ids', 'quantity',
         'product_id', 'invoice_id.partner_id', 'invoice_id.currency_id', 'invoice_id.company_id',
         'invoice_id.date_invoice', 'invoice_id.date')
@@ -54,9 +54,9 @@ class AccountInvoiceLine(models.Model):
             price_subtotal_signed = currency._convert(price_subtotal_signed, self.invoice_id.company_id.currency_id, self.company_id or self.env.user.company_id, date or fields.Date.today())
         sign = self.invoice_id.type in ['in_refund', 'out_refund'] and -1 or 1
         self.price_subtotal_signed = price_subtotal_signed * sign
+"""
 
-
-
+"""
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
@@ -66,7 +66,7 @@ class AccountInvoice(models.Model):
         compute='_compute_amount',
     )
 
-    @api.one
+    #@api.one
     @api.depends('invoice_line_ids.price_subtotal', 'tax_line_ids.amount', 'tax_line_ids.amount_rounding',
                  'currency_id', 'company_id', 'date_invoice', 'type')
     def _compute_amount(self):
@@ -101,7 +101,7 @@ class AccountInvoice(models.Model):
         self.amount_untaxed_signed = amount_untaxed_signed * sign
 
 
-    @api.multi
+    #@api.multi
     def get_taxes_values(self):
         tax_grouped = {}
         round_curr = self.currency_id.round
@@ -119,3 +119,4 @@ class AccountInvoice(models.Model):
                     tax_grouped[key]['amount'] += val['amount']
                     tax_grouped[key]['base'] += round_curr(val['base'])
         return tax_grouped
+"""
